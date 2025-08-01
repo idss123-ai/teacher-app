@@ -1,4 +1,6 @@
 // api/ai/generate.js
+// Generira AI odgovor pomoću Google Gemini API-ja
+
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 export default async function handler(req, res) {
@@ -22,7 +24,12 @@ export default async function handler(req, res) {
 
     res.status(200).json({ response: text });
   } catch (error) {
-    console.error('Greška s Gemini-om:', error);
+    console.error('Greška s Gemini API-jem:', error);
+    
+    if (error.message.includes('API key')) {
+      return res.status(500).json({ message: 'Neispravan Gemini API ključ. Kontaktiraj administratora.' });
+    }
+
     res.status(500).json({ message: 'Došlo je do greške prilikom generiranja odgovora.' });
   }
 }
