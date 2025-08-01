@@ -1,7 +1,56 @@
 // frontend/App.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import api from './services/api';
 
 function App() {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  // Handle login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    const result = await api.login(email, password);
+
+    if (result.success) {
+      setSuccess('✅ Login successful! Welcome back.');
+      setIsLoginOpen(false);
+      setEmail('');
+      setPassword('');
+      // In future: redirect to main app
+    } else {
+      setError(result.message);
+    }
+  };
+
+  // Handle registration
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    const result = await api.register(firstName, lastName, email, password);
+
+    if (result.success) {
+      setSuccess('🎉 Account created! You can now log in.');
+      setIsRegisterOpen(false);
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+    } else {
+      setError(result.message);
+    }
+  };
+
   return (
     <div style={{
       display: 'flex',
@@ -17,6 +66,7 @@ function App() {
         overflowY: 'auto'
       }}>
         <h2>Teacher</h2>
+
         <input
           type="text"
           placeholder="Search prompts..."
@@ -70,6 +120,22 @@ function App() {
         overflowY: 'auto',
         backgroundColor: '#fff'
       }}>
+        <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+          <button
+            onClick={() => setIsLoginOpen(true)}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#000',
+              color: '#fff',
+              border: '1px solid #000',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Sisene
+          </button>
+        </div>
+
         <h1>Welcome, Teacher</h1>
         <p>Select a prompt from the sidebar to get started.</p>
 
@@ -112,8 +178,149 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* Login Modal */}
+      {isLoginOpen && (
+        <div style={modalStyle}>
+          <div style={modalContentStyle}>
+            <h3>Logi sisse</h3>
+            <form onSubmit={handleLogin}>
+              <input
+                type="email"
+                placeholder="Meiliaadress"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={inputStyle}
+              />
+              <input
+                type="password"
+                placeholder="Parool"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={inputStyle}
+              />
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+              {success && <p style={{ color: 'green' }}>{success}</p>}
+              <button type="submit" style={buttonStyle}>Logi sisse</button>
+            </form>
+            <p>
+              No account?{' '}
+              <span
+                onClick={() => {
+                  setIsLoginOpen(false);
+                  setIsRegisterOpen(true);
+                }}
+                style={{ color: '#00f', cursor: 'pointer' }}
+              >
+                Registreeri siin
+              </span>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Registration Modal */}
+      {isRegisterOpen && (
+        <div style={modalStyle}>
+          <div style={modalContentStyle}>
+            <h3>Registreeri</h3>
+            <form onSubmit={handleRegister}>
+              <input
+                type="text"
+                placeholder="Eesnimi"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                style={inputStyle}
+              />
+              <input
+                type="text"
+                placeholder="Perekonnanimi"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                style={inputStyle}
+              />
+              <input
+                type="email"
+                placeholder="Meiliaadress"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={inputStyle}
+              />
+              <input
+                type="password"
+                placeholder="Parool"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={inputStyle}
+              />
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+              {success && <p style={{ color: 'green' }}>{success}</p>}
+              <button type="submit" style={buttonStyle}>Registreeri</button>
+            </form>
+            <p>
+              Already have an account?{' '}
+              <span
+                onClick={() => {
+                  setIsRegisterOpen(false);
+                  setIsLoginOpen(true);
+                }}
+                style={{ color: '#00f', cursor: 'pointer' }}
+              >
+                Log in here
+              </span>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+// Modal styles
+const modalStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0,0,0,0.7)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1000,
+};
+
+const modalContentStyle = {
+  backgroundColor: '#fff',
+  padding: '30px',
+  borderRadius: '8px',
+  width: '90%',
+  maxWidth: '400px',
+};
+
+const inputStyle = {
+  display: 'block',
+  width: '100%',
+  padding: '10px',
+  marginBottom: '10px',
+  border: '1px solid #ddd',
+  borderRadius: '4px',
+};
+
+const buttonStyle = {
+  backgroundColor: '#000',
+  color: '#fff',
+  padding: '10px 20px',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  width: '100%',
+};
 
 export default App;
