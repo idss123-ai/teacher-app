@@ -1,9 +1,7 @@
 {
   "name": "teacher-app",
   "version": "0.1.0",
-  "scripts": {
-    "build": "echo 'No build needed'",
-    "dev": "echo 'Running locally'",
-    "start": "echo 'Started'"
+  "dependencies": {
+    "@google/generative-ai": "^0.15.0"
   }
 }
