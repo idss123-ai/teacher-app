@@ -23,6 +23,7 @@ app.use(cors());
 
 // 🔑 AUTH ROUTE (we'll create this next)
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/prompts', require('./routes/promptRoutes'));
 
 // 🏠 Default route (just to test if the server is running)
 app.get('/', (req, res) => {
