@@ -18,7 +18,7 @@
       overflow: hidden;
     }
 
-    /* Pozadina sa slikom */
+    /* Glavni kontejner sa pozadinskom slikom */
     .container {
       height: 100vh;
       display: flex;
@@ -38,30 +38,36 @@
       font-weight: bold;
       margin-bottom: 20px;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    /* Natpis ispod logotipa */
+    /* Tagline ispod loga */
     .tagline {
       font-size: 1.5rem;
       margin-bottom: 30px;
       font-weight: 300;
+      max-width: 700px;
     }
 
-    /* Dugmad */
+    /* Kontejner za dugmad */
     .buttons {
       display: flex;
       gap: 20px;
       justify-content: center;
+      flex-wrap: wrap;
+      max-width: 500px;
     }
 
+    /* Opće stilove za dugmad */
     button {
-      padding: 12px 24px;
-      font-size: 1rem;
+      padding: 14px 28px;
+      font-size: 1.1rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 500;
       transition: all 0.3s ease;
+      min-width: 150px;
     }
 
     /* Dugme za prijavu */
@@ -74,6 +80,7 @@
     .login-btn:hover {
       background: #333;
       transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     }
 
     /* Dugme za otkrivanje */
@@ -87,6 +94,7 @@
     .discover-btn:hover {
       background: rgba(255, 255, 255, 0.1);
       transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(255, 255, 255, 0.15);
     }
 
     /* Prilagodba za manje ekrane */
@@ -97,6 +105,7 @@
 
       .tagline {
         font-size: 1.2rem;
+        padding: 0 20px;
       }
 
       .buttons {
@@ -106,19 +115,20 @@
 
       button {
         width: 100%;
+        padding: 12px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Glavni sadržaj -->
+  <!-- Glavni sadržaj stranice -->
   <div class="container">
     <div class="logo">Teacher</div>
     <div class="tagline">An Educator's Prompt Toolkit</div>
     <div class="buttons">
       <!-- Dugme za prijavu -->
       <button class="login-btn" onclick="alert('Prijavni obrazac će uskoro biti dostupan.')">Sisene</button>
-      <!-- Dugme za otkrivanje -->
+      <!-- Dugme za otkrivanje mogućnosti -->
       <button class="discover-btn" onclick="alert('Upoznajte mogućnosti našeg AI alata za učitelje.')">Avasta</button>
     </div>
   </div>
